@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class ToDoServiceImpl implements ToDoService {
 
-    private ToDoRepository todoRepository;
+    private final ToDoRepository todoRepository;
 
     public ToDoServiceImpl(ToDoRepository todoRepository) {
         this.todoRepository = todoRepository;
@@ -37,18 +37,18 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public ToDo update(ToDo todo) {
-        if (todo == null) {
-            throw new NullEntityReferenceException("Cannot update a ToDo as the passed object is null.");
+        if (todo == null || (todo.getTitle() != null && todo.getTitle().trim().isEmpty())) {
+            throw new NullEntityReferenceException("Cannot update a ToDo as the passed object is null or title is empty.");
         }
-        // Verify that the ToDo exists before updating
-        ToDo existingToDo = readById(todo.getId()); // This method already throws EntityNotFoundException if ToDo does not exist
+        // This ensures ToDo exists and throws EntityNotFoundException if it doesn't
+        ToDo existingToDo = readById(todo.getId());
         return todoRepository.save(todo);
     }
 
     @Override
     public void delete(long id) {
-        // Ensure the ToDo exists before deleting
-        ToDo todo = readById(id); // This method already throws EntityNotFoundException if ToDo does not exist
+        // This ensures ToDo exists before deletion and throws EntityNotFoundException if it doesn't
+        ToDo todo = readById(id);
         todoRepository.delete(todo);
     }
 
