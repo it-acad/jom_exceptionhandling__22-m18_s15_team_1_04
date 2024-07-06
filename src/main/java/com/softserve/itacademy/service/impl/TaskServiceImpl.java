@@ -61,6 +61,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks.isEmpty() ? new ArrayList<>() : tasks;
     }
 
+
     @Override
     public List<Task> getByTodoId(long todoId) {
         List<Task> tasks = taskRepository.getByTodoId(todoId);

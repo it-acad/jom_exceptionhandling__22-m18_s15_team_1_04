@@ -48,6 +48,7 @@ public class RoleServiceImpl implements RoleService {
         }
         return roleRepository.save(role);
     }
+
     @Override
     public void delete(long id) {
         if (!roleRepository.existsById(id)) {

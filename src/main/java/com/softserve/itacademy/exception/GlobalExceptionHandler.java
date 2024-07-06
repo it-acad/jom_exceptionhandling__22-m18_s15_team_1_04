@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
         return "404-page";
     }
 
+
     @ExceptionHandler(NullEntityReferenceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNullEntityReferenceException(NullEntityReferenceException ex, Model model) {

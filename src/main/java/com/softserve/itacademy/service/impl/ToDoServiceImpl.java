@@ -62,6 +62,7 @@ public class ToDoServiceImpl implements ToDoService {
         return todos.isEmpty() ? new ArrayList<>() : todos;
     }
 
+
     @Override
     public List<ToDo> getByUserId(long userId) {
         List<ToDo> todos = todoRepository.getByUserId(userId);
