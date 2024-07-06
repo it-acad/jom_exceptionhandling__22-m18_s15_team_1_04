@@ -1,5 +1,7 @@
 package com.softserve.itacademy.service.impl;
 
+import com.softserve.itacademy.exception.EntityNotFoundException;
+import com.softserve.itacademy.exception.NullEntityReferenceException;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.repository.UserRepository;
 import com.softserve.itacademy.service.UserService;
@@ -20,25 +22,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-            return userRepository.save(user);
+        if (user == null) {
+            throw new NullEntityReferenceException("User cannot be null");
+        }
+
+        return userRepository.save(user);
     }
 
     @Override
     public User readById(long id) {
         Optional<User> optional = userRepository.findById(id);
-            return optional.get();
+        if (optional.isEmpty()) {
+            throw new EntityNotFoundException("User with id " + id + " not found");
+        }
+        return optional.get();
     }
+
 
     @Override
     public User update(User user) {
-            User oldUser = readById(user.getId());
-                return userRepository.save(user);
+        if (user == null) {
+            throw new NullEntityReferenceException("User cannot be null");
+        }
+        if (!userRepository.existsById(user.getId())) {
+            throw new EntityNotFoundException("User with id " + user.getId() + " not found");
+        }
+        return userRepository.save(user);
     }
 
     @Override
     public void delete(long id) {
-        User user = readById(id);
-            userRepository.delete(user);
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("User with id " + id + " not found");
+        }
+        userRepository.deleteById(id);
     }
 
     @Override

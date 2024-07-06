@@ -1,5 +1,7 @@
 package com.softserve.itacademy.service.impl;
 
+import com.softserve.itacademy.exception.EntityNotFoundException;
+import com.softserve.itacademy.exception.NullEntityReferenceException;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.repository.ToDoRepository;
 import com.softserve.itacademy.service.ToDoService;
@@ -20,25 +22,39 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public ToDo create(ToDo todo) {
-            return todoRepository.save(todo);
+        if (todo == null) {
+            throw new NullEntityReferenceException("ToDo cannot be null");
+        }
+        return todoRepository.save(todo);
     }
 
     @Override
     public ToDo readById(long id) {
         Optional<ToDo> optional = todoRepository.findById(id);
-            return optional.get();
+        if (optional.isEmpty()) {
+            throw new EntityNotFoundException("ToDo with id " + id + " not found");
+        }
+        return optional.get();
     }
+
 
     @Override
     public ToDo update(ToDo todo) {
-            ToDo oldTodo = readById(todo.getId());
-                return todoRepository.save(todo);
+        if (todo == null || todo.getTitle() == null || todo.getTitle().trim().isEmpty()) {
+            throw new NullEntityReferenceException("ToDo cannot be null");
+        }
+        if (!todoRepository.existsById(todo.getId())) {
+            throw new EntityNotFoundException("ToDo with id " + todo.getId() + " not found");
+        }
+        return todoRepository.save(todo);
     }
 
     @Override
     public void delete(long id) {
-        ToDo todo = readById(id);
-            todoRepository.delete(todo);
+        if (!todoRepository.existsById(id)) {
+            throw new EntityNotFoundException("ToDo with id " + id + " not found");
+        }
+        todoRepository.deleteById(id);
     }
 
     @Override
