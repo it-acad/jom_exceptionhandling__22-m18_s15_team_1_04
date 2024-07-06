@@ -48,8 +48,8 @@ class ToDoServiceTest {
     }
     @Test
     void updateNonExistingToDoShouldThrowException() {
-        ToDo fakeToDo = new ToDo(); // Створення фейкового ToDo для тесту
-        fakeToDo.setId(999L); // ID, який не існує в базі
+        ToDo fakeToDo = new ToDo();
+        fakeToDo.setId(999L);
         when(todoRepositoryMock.findById(fakeToDo.getId())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> service.update(fakeToDo));
