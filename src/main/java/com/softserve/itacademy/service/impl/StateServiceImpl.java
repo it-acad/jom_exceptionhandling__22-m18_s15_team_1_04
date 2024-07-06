@@ -65,6 +65,7 @@ public class StateServiceImpl implements StateService {
         return optional.get();
     }
 
+
     @Override
     public List<State> getAll() {
         List<State> states = stateRepository.getAll();

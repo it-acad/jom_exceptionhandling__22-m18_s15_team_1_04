@@ -37,7 +37,6 @@ public class ToDoServiceImpl implements ToDoService {
         return optional.get();
     }
 
-
     @Override
     public ToDo update(ToDo todo) {
         if (todo == null || todo.getTitle() == null || todo.getTitle().trim().isEmpty()) {

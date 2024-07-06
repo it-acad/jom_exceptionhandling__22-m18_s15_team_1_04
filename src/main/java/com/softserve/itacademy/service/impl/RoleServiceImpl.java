@@ -55,7 +55,6 @@ public class RoleServiceImpl implements RoleService {
         }
         roleRepository.deleteById(id);
     }
-
     @Override
     public List<Role> getAll() {
         List<Role> roles = roleRepository.findAll();
